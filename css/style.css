@@ -1,0 +1,280 @@
+/* Defina suas cores personalizadas aqui */
+:root {
+    --bg-primary: #eaeaea;
+    --title-primary-color: #ffffff;
+    --title-secondary-color: #FF3131;
+    font-size: 18px;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background-color: #2c2c31;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #9e9ea0;
+  }
+  
+  /* Restante do seu CSS */
+  html {
+    font-size: 16px;
+    position: relative;
+    min-height: 100%;
+  }
+  
+  @media (min-width: 768px) {
+    html {
+      font-size: 16px;
+    }
+  }
+  
+  .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+  }
+  
+  html {
+    position: relative;
+    min-height: 100%;
+  }
+  
+  body {
+    background-color: var(--bg-primary);
+    margin-bottom: 60px;
+    font-family: "Roboto", sans-serif;
+  }
+
+
+  header {
+    height: fit-content;
+    top: 0;
+    z-index: 1;
+}
+
+header nav ul {
+  width: auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.2rem;
+}
+
+header nav ul li {
+  min-width: fit-content;
+  height: fit-content;
+  padding: 0 0.75rem;
+  font-size: large;
+  cursor: pointer;
+
+  list-style: none;
+}
+
+/* Adicione este trecho ao seu CSS personalizado */
+.custom-navbar {
+    background-color: #212529;
+    color: #F5F5F5; /* Substitua pela cor desejada em hexadecimal */
+}
+
+.border-top {
+border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px;
+}
+
+  
+  /* Botão de informação */
+  .btn-info {
+    background-color: #1b4b72; /* Uma tonalidade mais escura de azul */
+    color: #ffffff;
+    border: 2px solid #1b4b72; /* Borda com a mesma cor do fundo */
+  }
+  
+  .btn-info:hover {
+    background-color: #153854; /* Cor mais escura ao passar o mouse */
+  }
+  
+  /* Botão de perigo */
+  .btn-danger {
+    background-color: #b33c3c; /* Um vermelho mais escuro */
+    color: #ffffff;
+    border: 2px solid #b33c3c; /* Borda com a mesma cor do fundo */
+  }
+  
+  .btn-danger:hover {
+    background-color: #932c2c; /* Cor mais escura ao passar o mouse */
+  }
+  
+  /* Botão primário */
+  .btn-primary {
+    background-color: #121212; /* Um preto mais escuro */
+    color: #ffffff;
+    border: 2px solid #121212; /* Borda com a mesma cor do fundo */
+  }
+  
+  .btn-primary:hover {
+    background-color: #0d0d0d; /* Cor mais escura ao passar o mouse */
+  }
+  
+  .card-zoom {
+    overflow: hidden;
+    transition: transform 0.2s; /* Adiciona uma transição suave */
+  }
+  
+  .card-link:hover {
+    cursor: pointer; /* Muda o cursor para indicar que o card é clicável */
+  }
+  
+  .img-zoom:hover {
+    transform: scale(1.1); /* Aumenta o tamanho da imagem ao passar o mouse */
+  }
+  
+  /* .memory {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    text-decoration: none;
+    margin-bottom: 64px;
+  }
+  
+  .memory small {
+    color: #bebebf;
+    font-size: 0.75rem;
+  }
+  
+  .memory h1 {
+    font-size: 2rem;
+    color: #eaeaea;
+  }
+  
+  .memory img {
+    width: 100%;
+    height: 100%;
+    max-height: 280px;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .memory:hover img {
+    transform: scale(1.1);
+  }
+  
+  .memory div {
+    overflow: hidden;
+    border-radius: 8px;
+  }
+  
+  .memory p {
+    font-size: 1.2rem;
+    color: #bebebf;
+    line-height: 28px;
+  } */
+  
+  
+  /* Cor dos títulos do menu */
+  .navbar-dark .navbar-nav .nav-link {
+    color: #FFFFFF;
+  }
+  
+  /* Cor de fundo quando selecionado */
+  .navbar-dark .navbar-nav .nav-item.active .nav-link,
+  .navbar-dark .navbar-nav .nav-item.show .nav-link {
+    color: #FF3131; /* Cor do texto ao selecionar */
+    background-color: #343A40;
+  }
+  
+  /* Cor de fundo ao passar o mouse */
+  .navbar-dark .navbar-nav .nav-link:hover {
+    color: #FF3131; /* Cor do texto ao passar o mouse */
+  }
+  
+  #image-preview {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+  
+  .image-container {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 5px;
+    text-align: center;
+    flex: 0 0 calc(20% - 20px);
+    max-width: calc(20% - 20px);
+    position: relative;
+  }
+  
+  .image-container img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+  
+  .caption {
+    margin-top: 5px;
+    font-size: 14px;
+  }
+  
+  .memory .card {
+    height: 450px; /* Defina a altura fixa desejada para o card */
+    position: relative;
+  }
+  
+  .memory .card-body {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.8); /* Adiciona um fundo semitransparente para o texto */
+  }
+  
+  .memory .carousel-inner {
+    height: 100%; /* Garante que a altura do carousel seja 100% do card */
+  }
+  
+  .memory .carousel-item {
+    position: relative;
+    max-height: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  
+  .memory .carousel-item.active {
+    display: block; /* Exibe apenas o item ativo do carousel */
+  }
+  
+  .memory .carousel-item img {
+    max-height: 230px; /* Ajuste o tamanho máximo desejado */
+    max-width: 100%; /* Garante que a largura não ultrapasse a largura do container */
+    object-fit: cover; /* Mantém a proporção da imagem e corta para caber no contêiner */
+  }
+  
+  .memory p {
+    font-size: 1.1rem;
+    line-height: 18px;
+    margin-top: 20px;
+  }
