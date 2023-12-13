@@ -1,4 +1,4 @@
-const veiculoModels = require('../models/veiculoModels');
+const veiculoModels = require('../models/veiculoModel');
 
 // Controlador para listar todos os veículos
 async function listarVeiculos(req, res) {
@@ -7,6 +7,24 @@ async function listarVeiculos(req, res) {
     res.json(veiculos);
   } catch (error) {
     console.error('Erro ao listar veículos:', error);
+    res.status(500).send('Erro interno do servidor');
+  }
+}
+
+// Controlador para criar um novo veículo
+async function criarVeiculo(req, res) {
+  console.log('Chamando a função criarVeiculo');
+  const novoVeiculo = req.body;
+  console.log('Dados do corpo da solicitação:', novoVeiculo);
+
+  try {
+    // Certifique-se de ajustar os nomes dos campos de acordo com os que estão no seu formulário HTML
+    
+    const veiculoCriado = await veiculoModels.criarVeiculo(novoVeiculo);
+
+    res.status(201).json(veiculoCriado);
+  } catch (error) {
+    console.error('Erro ao criar veículo:', error);
     res.status(500).send('Erro interno do servidor');
   }
 }
@@ -22,18 +40,6 @@ async function obterVeiculoPorId(req, res) {
     res.json(veiculo);
   } catch (error) {
     console.error('Erro ao obter veículo por ID:', error);
-    res.status(500).send('Erro interno do servidor');
-  }
-}
-
-// Controlador para criar um novo veículo
-async function criarVeiculo(req, res) {
-  const novoVeiculo = req.body; // Certifique-se de enviar os dados do novo veículo no corpo da requisição
-  try {
-    const veiculoCriado = await veiculoModels.criarVeiculo(novoVeiculo);
-    res.status(201).json(veiculoCriado);
-  } catch (error) {
-    console.error('Erro ao criar veículo:', error);
     res.status(500).send('Erro interno do servidor');
   }
 }
@@ -69,23 +75,10 @@ async function excluirVeiculo(req, res) {
   }
 }
 
-async function obterFotosPorVeiculoId(req, res) {
-  const veiculoId = req.params.veiculoId;
-
-  try {
-    const fotos = await veiculoModels.obterFotosPorVeiculoId(veiculoId);
-    res.json(fotos);
-  } catch (error) {
-    console.error('Erro ao obter fotos por ID de veículo:', error);
-    res.status(500).send('Erro interno do servidor');
-  }
-}
-
 module.exports = {
   listarVeiculos,
   obterVeiculoPorId,
   criarVeiculo,
   atualizarVeiculo,
   excluirVeiculo,
-  obterFotosPorVeiculoId,
 };

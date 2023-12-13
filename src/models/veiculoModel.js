@@ -32,7 +32,7 @@ const Veiculo = sequelize.define('Veiculo', {
     allowNull: false,
   },
   Ativo: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   CFOP: {
@@ -48,7 +48,6 @@ const Veiculo = sequelize.define('Veiculo', {
     allowNull: false,
   },
 
-  // Adicione outras colunas conforme necessário
   DtCadastro: {
     type: DataTypes.DATE,
     allowNull: false,
@@ -142,40 +141,30 @@ const Veiculo = sequelize.define('Veiculo', {
   Observacoes: {
     type: DataTypes.TEXT,
   },
+  
   },
+
   {
     sequelize,
     modelName: 'Veiculo',
-    tableName: 'Veiculo', // Nome da tabela no banco de dados
+    tableName: 'Veiculos', // Nome da tabela no banco de dados
     timestamps: false, // Não queremos timestamps automáticos
   }
 );
-
-const Foto = sequelize.define('Foto', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  veiculoId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  NomeArquivo: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-});
-
-// Definindo o relacionamento entre Veiculo e Foto
-Veiculo.hasMany(Foto, { foreignKey: 'veiculoId' });
-Foto.belongsTo(Veiculo, { foreignKey: 'veiculoId' });
-
 
 const obterTodosVeiculos = async () => {
   try {
     const veiculos = await Veiculo.findAll();
     return veiculos;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const criarVeiculo = async (novoVeiculo) => {
+  try {
+    const veiculoCriado = await Veiculo.create(novoVeiculo);
+    return veiculoCriado;
   } catch (error) {
     throw error;
   }
@@ -189,15 +178,6 @@ const obterVeiculoPorId = async (veiculoId) => {
     return veiculo;
   } catch (error) {
     console.error('Erro ao obter veículo por ID:', error);
-    throw error;
-  }
-};
-
-const criarVeiculo = async (novoVeiculo) => {
-  try {
-    const veiculoCriado = await Veiculo.create(novoVeiculo);
-    return veiculoCriado;
-  } catch (error) {
     throw error;
   }
 };
@@ -226,30 +206,11 @@ const excluirVeiculo = async (veiculoId) => {
   }
 };
 
-const obterFotosPorVeiculoId = async (idVeiculo) => {
-  try {
-    console.log('Buscando fotos para veículo ID:', idVeiculo);
-    const veiculo = await Veiculo.findByPk(idVeiculo, {
-      include: Foto,
-    });
-
-    if (!veiculo) {
-      throw new Error('Veículo não encontrado');
-    }
-
-    console.log('Fotos encontradas:', veiculo.Fotos);
-    return veiculo.Fotos;
-  } catch (error) {
-    console.error('Erro ao obter fotos por ID de veículo:', error);
-    throw error;
-  }
-};
-
 module.exports = {
   obterTodosVeiculos,
   obterVeiculoPorId,
   criarVeiculo,
   atualizarVeiculo,
   excluirVeiculo,
-  obterFotosPorVeiculoId,
+  Veiculo,
 };

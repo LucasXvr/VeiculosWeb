@@ -1,16 +1,30 @@
 const express = require('express');
 const cors = require('cors');
 const sequelize = require('./config/database');
-const { Veiculo } = require('./models/veiculoModels');
+const { Veiculo } = require('./models/veiculoModel');
 const veiculosRoutes = require('./routes/veiculosRoutes');
-
+const fotoRouter = require('./routes/fotoRouter');
 const app = express();
 
+app.use(express.json());
 // Configurar CORS para permitir todas as origens (em desenvolvimento)
 app.use(cors());
 
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
+
+app.use('/veiculos', (req, res, next) => {
+  console.log(`Recebida uma solicitação para ${req.method} ${req.url}`);
+  next();
+});
+
 // Configurar rotas
 app.use('/veiculos', veiculosRoutes);
+app.use('/fotos', fotoRouter);
 
 // Inicializar a conexão com o banco de dados
 (async () => {

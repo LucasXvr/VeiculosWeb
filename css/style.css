@@ -278,3 +278,10 @@ footer {
     line-height: 18px;
     margin-top: 20px;
   }
+
+  
+  .error-message {
+    display: none;
+    color: red;
+    margin-top: 10px;
+}

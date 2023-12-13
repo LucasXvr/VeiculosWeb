@@ -1,5 +1,5 @@
 const express = require('express');
-const veiculoModels = require('../models/veiculoModels');
+const veiculoModels = require('../models/veiculoModel');
 
 const router = express.Router();
 
@@ -16,15 +16,27 @@ router.get('/', async (req, res) => {
 
 // Rota para criar um novo veículo
 router.post('/', async (req, res) => {
-  const novoVeiculo = req.body; // Certifique-se de enviar os dados do novo veículo no corpo da requisição
+  console.log('Recebida uma solicitação para POST /veiculos');
+  console.log('req.body:', req.body);
+  const novoVeiculo = req.body;
+  console.log('novoVeiculo:', novoVeiculo);
+
+
+  if (!novoVeiculo || Object.keys(novoVeiculo).length === 0) {
+    console.log('Dados ausentes na solicitação.');
+    return res.status(400).json({ erro: 'Corpo da requisição ausente' });
+  }
+
   try {
+    // Chame a função para criar veículo no seu modelo (veiculoModels.criarVeiculo)
     const veiculoCriado = await veiculoModels.criarVeiculo(novoVeiculo);
-    res.json(veiculoCriado);
+    res.status(201).json(veiculoCriado);
   } catch (error) {
     console.error('Erro ao criar veículo:', error);
     res.status(500).send('Erro interno do servidor');
   }
 });
+
 
 // Rota para obter um veículo por ID
 router.get('/:id', async (req, res) => {
@@ -59,21 +71,6 @@ router.delete('/:id', async (req, res) => {
     res.json({ mensagem: 'Veículo excluído com sucesso.' });
   } catch (error) {
     console.error('Erro ao excluir veículo:', error);
-    res.status(500).send('Erro interno do servidor');
-  }
-});
-
-// Rota para buscar fotos por idVeiculo
-router.get('/fotos/:idVeiculo', async (req, res) => {
-  const idVeiculo = req.params.idVeiculo;
-
-  try {
-    console.log('Rota de fotos acessada para veículo ID:', idVeiculo);
-    const fotos = await veiculoModels.obterFotosPorVeiculoId(idVeiculo);
-    console.log('Fotos obtidas:', fotos);
-    res.json(fotos);
-  } catch (error) {
-    console.error('Erro ao obter fotos por ID de veículo:', error);
     res.status(500).send('Erro interno do servidor');
   }
 });
