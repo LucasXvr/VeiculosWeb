@@ -37,13 +37,13 @@ router.post('/', async (req, res) => {
   }
 });
 
-
 // Rota para obter um veículo por ID
 router.get('/:id', async (req, res) => {
   const veiculoId = req.params.id;
+  console.log('Recebida uma solicitação para obter veículo por ID:', veiculoId);
   try {
     const veiculo = await veiculoModels.obterVeiculoPorId(veiculoId);
-    res.json(veiculo);
+    res.render('DetalharVeiculos', { veiculo });
   } catch (error) {
     console.error('Erro ao obter veículo por ID:', error);
     res.status(500).send('Erro interno do servidor');

@@ -10,6 +10,7 @@ $(document).ready(function () {
             if (Array.isArray(veiculos)) {
                 // Iterar sobre cada veículo e adicionar um card
                 veiculos.forEach(function (veiculo) {
+                    console.log('Veiculo:', veiculo);
                     var cardHtml = `
                         <div class="col-md-4 mb-4">
                             <div class="card">
@@ -55,7 +56,7 @@ $(document).ready(function () {
                                         <strong>Ano:</strong> ${veiculo.ModeloVeiculo}
                                     </p>
                                     <div class="btn-group" role="group">
-                                        <a href="/veiculo/${veiculo.id}" class="btn btn-primary">Detalhes</a>
+                                        <a href="#" class="btn btn-primary detalhes-btn" data-veiculo-id="${veiculo.id}">Detalhes</a>
                                         <a href="/veiculo/editar/${veiculo.id}" class="btn btn-info">Editar</a>
                                         <a href="/veiculo/excluir/${veiculo.id}" class="btn btn-danger">Excluir</a>
                                     </div>
@@ -66,6 +67,14 @@ $(document).ready(function () {
 
                     // Adicionar o card à lista de veículos
                     $('#veiculosList').append(cardHtml);
+                });
+
+                // Adicionar um ouvinte de eventos para os botões de detalhes
+                $('.detalhes-btn').click(function (event) {
+                    event.preventDefault();
+                    const veiculoId = $(this).data('veiculo-id');
+                    // Navegar para a página de detalhes com o ID do veículo
+                    window.location.href = `/pages/veiculos/DetalharVeiculos.html?id=${veiculoId}`;
                 });
             } else {
                 console.error('A resposta do servidor não é um array:', veiculos);

@@ -4,7 +4,13 @@ const sequelize = require('./config/database');
 const { Veiculo } = require('./models/veiculoModel');
 const veiculosRoutes = require('./routes/veiculosRoutes');
 const fotoRouter = require('./routes/fotoRouter');
+const path = require('path'); // Adicione esta linha
+
 const app = express();
+
+// Configurar mecanismo de visualização (neste exemplo, estou usando EJS)
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.json());
 // Configurar CORS para permitir todas as origens (em desenvolvimento)
@@ -25,6 +31,18 @@ app.use('/veiculos', (req, res, next) => {
 // Configurar rotas
 app.use('/veiculos', veiculosRoutes);
 app.use('/fotos', fotoRouter);
+
+// Rota para renderizar a página de detalhes do veículo por ID
+app.get('/veiculos/:id/detalhes', async (req, res) => {
+  const veiculoId = req.params.id;
+  try {
+    const veiculo = await veiculoModels.obterVeiculoPorId(veiculoId);
+    res.render('DetalharVeiculos', { veiculo });
+  } catch (error) {
+    console.error('Erro ao obter veículo por ID:', error);
+    res.status(500).send('Erro interno do servidor');
+  }
+});
 
 // Inicializar a conexão com o banco de dados
 (async () => {

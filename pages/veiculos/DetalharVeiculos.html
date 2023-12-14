@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="font-src 'self' https://fonts.gstatic.com;">
     <title>Adicionar Veículos - E2Motors</title>
     <!-- Adicione os links para os arquivos CSS necessários -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" />
@@ -25,7 +26,7 @@
                 <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav ml-auto" id="navbarNav">
                         <li class="nav-item">
-                            <a class="nav-link" href="pages/veiculos/ListarVeiculos.html">Veículos</a>
+                            <a class="nav-link" href="ListarVeiculos.html">Veículos</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="caminho/para/cliente/Index">Clientes</a>
@@ -46,10 +47,75 @@
 
             <ul class="nav nav-tabs" id="myTabs" role="tablist">
                 <!-- Adicione as guias da sua página aqui -->
+                <li class="nav-item">
+                    <a class="nav-link active" id="informacoes-tab" data-toggle="tab" href="#informacoes"
+                        role="tab">Informações</a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link" id="fotos-tab" data-toggle="tab" href="#fotos" role="tab">Fotos</a>
+                </li> -->
+                <li class="nav-item">
+                    <a class="nav-link" id="documentacao-tab" data-toggle="tab" href="#documentacao" role="tab">Documentação</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="caracteristicas-tab" data-toggle="tab" href="#caracteristicas"
+                        role="tab">Características</a>
+                </li>
+       
             </ul>
 
             <div class="tab-content mt-2">
                 <!-- Adicione o conteúdo das guias aqui -->
+                <div class="tab-pane active" id="informacoes">
+                    <div class="card p-4">
+                        <!-- Seção: Informações do Veículo -->
+                        <h3>Informações do Veículo</h3>
+                        <p><strong>Código:</strong> <span id="id"></span></p>
+                        <p><strong>Grupo:</strong> <span id="grupo"></span></p>
+                        <p><strong>Unidade:</strong> <span id="unidade"></span></p>
+                        <p><strong>Preço de Custo:</strong> R$ <span id="prcusto"></span></p>
+                        <p><strong>Margem:</strong> <span id="margem"></span></p>
+                        <p><strong>Preço da Venda:</strong> R$ <span id="prvenda"></span></p>
+                        <p><strong>NCM:</strong> <span id="ncm"></span></p>
+                        <p><strong>Ativo:</strong> <span id="ativo"></span></p>
+                        <p><strong>CFOP:</strong> <span id="cfop"></span></p>
+                        <p><strong>CEST:</strong> <span id="cest"></span></p>
+                        <p><strong>Preço de Venda à Prazo:</strong> R$ <span id="prvendaprazo"></span></p>
+                        <p><strong>Data de Cadastro:</strong> <span id="dtcadastro"></span></p>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="documentacao" role="tabpanel">
+                    <div class="card p-4">
+                        <!-- Seção: Documentação do Veículo -->
+                        <h3>Documentação do Veículo</h3>
+                        <p><strong>Via Recibo do Veiculo:</strong> <span id="viareciboveiculo"></span></p>
+                        <p><strong>Renavam do Veículo:</strong> <span id="renavamveiculo"></span></p>
+                        <p><strong>Registro do Veículo:</strong> <span id="registroveiculo"></span></p>
+                        <p><strong>RNTRC do Veículo:</strong> <span id="rntrcveiculo"></span></p>
+                        <p><strong>Exercício de Emissão de Documento de Veículo:</strong> <span id="exeremisdocveiculo"></span></p>
+                        <p><strong>Placa do Veículo:</strong> <span id="placaveiculo"></span></p>
+                        <p><strong>Chassi do Veículo:</strong> <span id="chassiveiculo"></span></p>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="caracteristicas" role="tabpanel">
+                    <div class="card p-4">
+                        <!-- Seção: Características do Veículo -->
+                        <h3>Características do Veículo</h3>
+                        <p><strong>Combustível do Veículo:</strong> <span id="combustivelveiculo"></span></p>
+                        <p><strong>Fabricação do Veículo:</strong> <span id="fabricacaoveiculo"></span></p>
+                        <p><strong>Modelo do Veículo:</strong> <span id="modeloveiculo"></span></p>
+                        <p><strong>Cor do Veículo:</strong> <span id="corveiculo"></span></p>
+                        <p><strong>Categoria do Veículo:</strong> <span id="categoriaveiculo"></span></p>
+                        <p><strong>Emissão do Documento do Veículo:</strong> <span id="emissaodocumentoveiculo"></span></p>
+                        <p><strong>Local do Registro do Veículo:</strong> <span id="localregistroveiculo"></span></p>
+                        <p><strong>Capacidade, Potencia e Cilindrada do Veículo:</strong> <span id="cappotcilveiculo"></span></p>
+                        <p><strong>Marca Modelo do Veículo:</strong> <span id="marcamodeloveiculo"></span></p>
+                        <p><strong>Especie do Veículo:</strong> <span id="especieveiculo"></span></p>
+                        <p><strong>Observações:</strong> <span id="observacoes"></span></p>
+                    </div>
+                </div>
             </div>
 
             <div class="btn-group mt-3" role="group">
@@ -72,6 +138,11 @@
     <!-- Adicione os scripts JavaScript necessários -->
     <script src="https://code.jquery.com/jquery-3.6.4.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/veiculo/detalharVeiculo.js"></script>
+
+    <script>
+        console.log('Scripts JavaScript carregados com sucesso.');
+      </script>
 </body>
 
 </html>
