@@ -27,4 +27,6 @@ const Foto = sequelize.define(
   }
 );
 
+// Foto.belongsTo(Veiculo, { foreignKey: 'VeiculoId' }); // Adicione esta linha
+
 module.exports = Foto;

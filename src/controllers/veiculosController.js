@@ -1,5 +1,6 @@
 const veiculoModels = require('../models/veiculoModel');
 
+
 // Controlador para listar todos os veículos
 async function listarVeiculos(req, res) {
   try {
@@ -31,9 +32,13 @@ async function criarVeiculo(req, res) {
 
 // Controlador para obter um veículo por ID
 async function obterVeiculoPorId(req, res) {
+  console.log('Chamando a função obterVeiculoPorId');
   const veiculoId = req.params.id;
+  console.log('Dados do corpo da solicitação:', veiculoId);
+
   try {
     const veiculo = await veiculoModels.obterVeiculoPorId(veiculoId);
+    
     if (!veiculo) {
       return res.status(404).json({ mensagem: 'Veículo não encontrado' });
     }

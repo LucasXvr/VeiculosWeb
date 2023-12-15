@@ -1,12 +1,23 @@
 const express = require('express');
 const veiculoModels = require('../models/veiculoModel');
-
+const path = require('path');
 const router = express.Router();
+
+function validateId(req, res, next) {
+  const veiculoId = req.params.id;
+  if (!veiculoId || !/^\d+$/.test(veiculoId)) {
+    return res.status(400).json({ error: 'Formato de ID inválido' });
+  }
+  next();
+}
 
 // Rota para listar veículos
 router.get('/', async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const pageSize = parseInt(req.query.pageSize) || 10;
+
   try {
-    const veiculos = await veiculoModels.obterTodosVeiculos();
+    const veiculos = await veiculoModels.obterTodosVeiculos(page, pageSize);
     res.json(veiculos);
   } catch (error) {
     console.error('Erro ao obter veículos:', error);
@@ -37,16 +48,24 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Rota para obter um veículo por ID
-router.get('/:id', async (req, res) => {
+// Rota para renderizar a página de detalhes do veículo por ID
+router.get('/:id', validateId, async (req, res) => {
   const veiculoId = req.params.id;
   console.log('Recebida uma solicitação para obter veículo por ID:', veiculoId);
+
   try {
     const veiculo = await veiculoModels.obterVeiculoPorId(veiculoId);
-    res.render('DetalharVeiculos', { veiculo });
+
+    // Verifique se o veículo foi encontrado
+    if (!veiculo) {
+      return res.status(404).json({ error: 'Veículo não encontrado' });
+    }
+
+    // Envie os detalhes do veículo como JSON
+    res.json(veiculo);
   } catch (error) {
     console.error('Erro ao obter veículo por ID:', error);
-    res.status(500).send('Erro interno do servidor');
+    res.status(500).json({ error: 'Erro interno do servidor' });
   }
 });
 
