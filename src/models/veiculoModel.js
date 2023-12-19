@@ -148,15 +148,21 @@ const Veiculo = sequelize.define('Veiculo', {
     sequelize,
     modelName: 'Veiculo',
     tableName: 'Veiculos', // Nome da tabela no banco de dados
-    timestamps: false, // Não queremos timestamps automáticos
+    timestamps: false,
   }
 );
+
+// Adicione o método associate para definir associações
+Veiculo.associate = (models) => {
+  Veiculo.hasMany(models.Foto, { foreignKey: 'VeiculoId' });
+};
 
 const obterTodosVeiculos = async () => {
   try {
     const veiculos = await Veiculo.findAll();
     return veiculos;
   } catch (error) {
+    console.error('Erro ao obter veículos:', error);
     throw error;
   }
 };

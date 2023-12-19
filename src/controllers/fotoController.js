@@ -1,19 +1,46 @@
-const Veiculo = require('../models/veiculoModel');
 const Foto = require('../models/fotoModel');
 
 const uploadFoto = async (req, res) => {
+  console.log('VeiculoId:', req.params.veiculoId);
+  console.log('Arquivos recebidos:', req.files);
+
   try {
-      const idVeiculo = req.params.idVeiculo;
-      const nomeArquivo = req.file.filename;
+    const veiculoId = req.params.veiculoId;
 
-      // Salve os detalhes da foto no banco de dados
-      await Foto.create({ VeiculoId: idVeiculo, NomeArquivo: nomeArquivo });
+    // Certifique-se de que há um veículoId e que o array de fotos está presente
+    if (!veiculoId || !req.files || req.files.length === 0) {
+      return res.status(400).json({ error: 'Veículo ID ou fotos ausentes.' });
+    }
 
-      res.status(201).json({ message: 'Foto adicionada com sucesso.' });
+    // Iterar sobre os arquivos e salvar as informações na base de dados
+    for (const file of req.files) {
+      const fotoData = {
+        VeiculoId: veiculoId,
+        NomeArquivo: file.filename,
+      };
+
+      // Salvar informações da foto no banco de dados
+      await Foto.create(fotoData);
+    }
+
+    console.log('Fotos salvas com sucesso.');
+
+    res.status(201).json({ message: 'Fotos adicionadas com sucesso.' });
   } catch (error) {
-      console.error('Erro ao fazer upload da foto:', error);
-      res.status(500).json({ message: 'Erro ao fazer upload da foto.' });
+    console.error('Erro ao fazer upload da foto:', error);
+    res.status(500).json({ message: 'Erro ao fazer upload da foto.' });
   }
 };
 
-module.exports = { uploadFoto };
+// Método para obter as fotos de um veículo específico
+const obterFotosPorVeiculoId = async (veiculoId) => {
+  try {
+    const fotos = await Foto.obterFotosPorVeiculoId(veiculoId);
+    return fotos;
+  } catch (error) {
+    console.error('Erro ao obter fotos por veículo:', error);
+    throw error;
+  }
+};
+
+module.exports = { uploadFoto, obterFotosPorVeiculoId };

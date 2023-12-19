@@ -1,6 +1,5 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
-const Veiculo = require('./veiculoModel'); // Importe Veiculo após a definição do modelo
 
 const Foto = sequelize.define(
   'Foto',
@@ -27,6 +26,22 @@ const Foto = sequelize.define(
   }
 );
 
-// Foto.belongsTo(Veiculo, { foreignKey: 'VeiculoId' }); // Adicione esta linha
+// Adicione o método associate para definir associações
+Foto.associate = (models) => {
+  Foto.belongsTo(models.Veiculo, { foreignKey: 'VeiculoId' });
+};
 
-module.exports = Foto;
+const obterFotosPorVeiculoId = async (veiculoId) => {
+  try {
+    const fotos = await Foto.findAll({
+      where: { VeiculoId: veiculoId },
+      attributes: ['Id', 'NomeArquivo'],
+    });
+    return fotos;
+  } catch (error) {
+    console.error('Erro ao obter fotos por VeiculoId:', error);
+    throw error;
+  }
+};
+
+module.exports = { obterFotosPorVeiculoId, Foto };

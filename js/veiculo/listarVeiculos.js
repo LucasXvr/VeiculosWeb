@@ -1,32 +1,35 @@
 // Função para renderizar o HTML do carrossel de fotos
 function renderCarousel(veiculo) {
+    console.log('Veiculo:', veiculo);
     if (veiculo.Fotos && veiculo.Fotos.length > 0) {
         return `
-            <div id="carousel-${veiculo.id}" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner">
-                    ${veiculo.Fotos.map((foto, index) => `
-                        <div class="carousel-item ${index === 0 ? 'active' : ''}">
-                            <img src="/images/uploads/${foto.NomeArquivo}" alt="Foto"
-                                class="d-block w-100 img-fluid">
-                        </div>
-                    `).join('')}
+            <div class="row memory">
+                <div id="carousel-${veiculo.id}" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        ${veiculo.Fotos.map((foto, index) => `
+                            <div class="carousel-item ${index === 0 ? 'active' : ''}">
+                                <img src="/images/uploads/${foto.NomeArquivo}" alt="Foto"
+                                    class="d-block w-100 img-fluid">
+                            </div>
+                        `).join('')}
+                    </div>
+                    ${veiculo.Fotos.length > 1 ? `
+                        <a class="carousel-control-prev" href="#carousel-${veiculo.id}" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only"></span>
+                        </a>
+                        <a class="carousel-control-next" href="#carousel-${veiculo.id}" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only"></span>
+                        </a>
+                    ` : ''}\
+                    <ol class="carousel-indicators">
+                        ${veiculo.Fotos.map((foto, index) => `
+                            <li data-target="#carousel-${veiculo.id}" data-slide-to="${index}" class="${index === 0 ? 'active' : ''}">
+                            </li>
+                        `).join('')}
+                    </ol>
                 </div>
-                ${veiculo.Fotos.length > 1 ? `
-                    <a class="carousel-control-prev" href="#carousel-${veiculo.id}" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only"></span>
-                    </a>
-                    <a class="carousel-control-next" href="#carousel-${veiculo.id}" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only"></span>
-                    </a>
-                ` : ''}
-                <ol class="carousel-indicators">
-                    ${veiculo.Fotos.map((foto, index) => `
-                        <li data-target="#carousel-${veiculo.id}" data-slide-to="${index}" class="${index === 0 ? 'active' : ''}">
-                        </li>
-                    `).join('')}
-                </ol>
             </div>
         `;
     } else {
@@ -65,29 +68,46 @@ function renderVeiculoCard(veiculo) {
 }
 
 // Função para carregar veículos e renderizar os cards
-function loadVeiculos() {
-    $.get('http://localhost:3000/veiculos')
-        .done(function (veiculos) {
-            $('#veiculosList').empty();
+async function loadVeiculos() {
+    try {
+        const veiculos = await $.get('http://localhost:3000/veiculos');
 
-            if (Array.isArray(veiculos)) {
-                veiculos.forEach(function (veiculo) {
-                    $('#veiculosList').append(renderVeiculoCard(veiculo));
-                });
+        $('#veiculosList').empty();
 
-                $('.detalhes-btn').click(function (event) {
-                    event.preventDefault();
-                    const veiculoId = $(this).data('veiculo-id');
-                    console.log('ID do veículo:', veiculoId);
-                    window.location.href = `/pages/veiculos/DetalharVeiculos.html?id=${veiculoId}`;
-                });
-            } else {
-                console.error('A resposta do servidor não é um array:', veiculos);
+        if (Array.isArray(veiculos)) {
+            for (const veiculo of veiculos) {
+                // Obter as fotos do veículo
+                const fotos = await $.get(`http://localhost:3000/fotos/${veiculo.Id}`);
+
+                // Adicionar as fotos ao objeto do veículo
+                veiculo.Fotos = fotos;
+
+                // Renderizar o card do veículo com as fotos
+                $('#veiculosList').append(renderVeiculoCard(veiculo));
             }
-        })
-        .fail(function (error) {
-            console.error('Erro ao obter veículos:', error);
-        });
+
+            $('.detalhes-btn').click(async function (event) {
+                event.preventDefault();
+                const veiculoId = $(this).data('veiculo-id');
+                console.log('ID do veículo:', veiculoId);
+
+                // Obter as fotos do veículo
+                const fotos = await $.get(`http://localhost:3000/fotos/${veiculoId}`);
+
+                // Adicionar as fotos ao objeto do veículo
+                const veiculo = veiculos.find(v => v.Id === veiculoId);
+                veiculo.Fotos = fotos;
+
+                // Carregar as fotos e, em seguida, redirecionar para a página de detalhes
+                await loadFotosVeiculo(veiculo);
+                window.location.href = `/pages/veiculos/DetalharVeiculos.html?id=${veiculoId}`;
+            });
+        } else {
+            console.error('A resposta do servidor não é um array:', veiculos);
+        }
+    } catch (error) {
+        console.error('Erro ao obter veículos:', error);
+    }
 }
 
 // Executar a função ao carregar a página
@@ -114,3 +134,26 @@ $(document).ready(function () {
             });
     }
 });
+
+// Adicione esta função no seu script listarVeiculos.js
+async function loadFotosVeiculo(veiculo) {
+    try {
+        const fotos = await $.get(`http://localhost:3000/fotos/${veiculo.Id}`);
+
+        // Verifique se há fotos
+        if (fotos && fotos.length > 0) {
+            const fotosContainer = $('#fotosContainer');
+            fotosContainer.empty();
+
+            fotos.forEach(foto => {
+                // Adicione lógica para exibir as fotos da maneira desejada
+                fotosContainer.append(`<img src="/images/uploads/${foto.NomeArquivo}" alt="Foto" class="img-fluid">`);
+            });
+        } else {
+            // Caso não haja fotos, exiba uma mensagem
+            $('#fotosContainer').html('<p>Nenhuma foto disponível para este veículo.</p>');
+        }
+    } catch (error) {
+        console.error('Erro ao obter fotos do veículo:', error);
+    }
+}

@@ -285,3 +285,15 @@ footer {
     color: red;
     margin-top: 10px;
 }
+
+.photo-card {
+  height: 220px;
+  /* Defina a altura desejada para as cartas de foto */
+  margin-bottom: 20px;
+}
+
+.photo-img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: cover;
+}

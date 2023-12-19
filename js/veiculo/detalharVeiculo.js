@@ -25,12 +25,46 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             return response.json();
         })
-        .then(veiculo => {
+        .then(async veiculo => {
             // Atualizar a página com as informações do veículo
             exibirInformacoesVeiculo(veiculo);
+
+            // Carregar e exibir fotos do veículo
+            await loadFotosVeiculo(veiculo.Id);
         })
         .catch(error => console.error('Erro ao obter veículo:', error));
 });
+
+// Função para carregar e exibir as fotos do veículo
+async function loadFotosVeiculo(veiculoId) {
+    try {
+        const fotos = await $.get(`http://localhost:3000/fotos/${veiculoId}`);
+        const fotosContainer = $('#fotosContainer');
+
+        // Limpar o conteúdo anterior
+        fotosContainer.empty();
+
+        // Verificar se há fotos
+        if (fotos && fotos.length > 0) {
+            fotos.forEach(foto => {
+                // Adicionar cada foto ao container
+                fotosContainer.append(`
+                    <div class="col-md-4 mb-4">
+                        <div class="card photo-card">
+                            <img src="/images/uploads/${foto.NomeArquivo}" alt="Foto" class="card-img-top img-fluid photo-img">
+                        </div>
+                    </div>
+                `);
+            });
+        } else {
+            // Caso não haja fotos, exiba uma mensagem
+            fotosContainer.html('<p>Nenhuma foto disponível para este veículo.</p>');
+        }
+    } catch (error) {
+        console.error('Erro ao obter fotos do veículo:', error);
+    }
+}
+
 
 function exibirInformacoesVeiculo(veiculo) {
     // Atualizar o conteúdo da página com as informações do veículo

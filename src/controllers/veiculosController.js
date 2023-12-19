@@ -1,6 +1,5 @@
 const veiculoModels = require('../models/veiculoModel');
 
-
 // Controlador para listar todos os veículos
 async function listarVeiculos(req, res) {
   try {
