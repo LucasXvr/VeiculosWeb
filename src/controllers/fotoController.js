@@ -32,13 +32,16 @@ const uploadFoto = async (req, res) => {
   }
 };
 
-// Método para obter as fotos de um veículo específico
+// Método para obter fotos por VeiculoId
 const obterFotosPorVeiculoId = async (veiculoId) => {
   try {
-    const fotos = await Foto.obterFotosPorVeiculoId(veiculoId);
+    const fotos = await Foto.findAll({
+      where: { VeiculoId: veiculoId },
+      attributes: ['Id', 'NomeArquivo'],
+    });
     return fotos;
   } catch (error) {
-    console.error('Erro ao obter fotos por veículo:', error);
+    console.error('Erro ao obter fotos por VeiculoId:', error);
     throw error;
   }
 };

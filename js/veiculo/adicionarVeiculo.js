@@ -1,4 +1,130 @@
-function adicionarVeiculo() {
+document.addEventListener('DOMContentLoaded', function () {
+
+    const botaoSubmit = document.getElementById('btnSalvar');
+
+    botaoSubmit.addEventListener('click', async function (event) {
+        event.preventDefault(); // Impede a submissão automática do formulário
+
+        const novoVeiculo = obterDadosDoFormulario();
+
+        if (!novoVeiculo) {
+            console.log('Campos obrigatórios não preenchidos');
+            exibirMensagem('danger', 'Por favor, preencha todos os campos obrigatórios.');
+            return;
+        }
+
+        try {
+            console.log('Enviando dados para o servidor:', novoVeiculo);
+
+            const response = await fetch('http://localhost:3000/veiculos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(novoVeiculo),
+            });
+
+            console.log('Resposta do servidor:', response);
+
+            if (response.ok) {
+                // const data = await response.json();
+                // await uploadsFotos(data.Id, novoVeiculo.Fotos);
+
+                // Limpar os campos do formulário
+                limparFormulario();
+
+                // Exibir mensagem de sucesso
+                exibirMensagem('success', 'Veículo adicionado com sucesso!');
+            } else {
+                throw new Error('Erro ao adicionar veículo. Tente novamente.');
+            }
+        } catch (error) {
+            console.error('Erro ao adicionar veículo:', error.message);
+            exibirMensagem('danger', 'Erro interno do servidor. Tente novamente mais tarde.');
+        }
+    });
+});
+
+// Função para exibir mensagens na interface do usuário
+function exibirMensagem(tipo, mensagem) {
+    const mensagemElemento = document.getElementById('mensagemSucesso'); // Alteração aqui
+
+    if (mensagemElemento) {
+        mensagemElemento.textContent = mensagem;
+        mensagemElemento.className = `alert alert-${tipo}`;
+        mensagemElemento.style.display = 'block';
+
+        setTimeout(() => {
+            mensagemElemento.style.display = 'none';
+        }, 5000);
+    } else {
+        console.error('Elemento da mensagem não encontrado.');
+    }
+}
+
+// Implementação básica da função para limpar o formulário
+function limparFormulario() {
+    const elementosFormulario = document.querySelectorAll('form input, form select, form textarea');
+
+    elementosFormulario.forEach(elemento => {
+        elemento.value = '';
+    });
+}
+
+async function uploadsFotos(veiculoId, fotos) {
+    const formData = new FormData();
+
+    try {
+        for (let index = 0; index < fotos.length; index++) {
+            const file = fotos[index];
+            console.log('Adicionando foto ao FormData:', file.name);
+            formData.append('fotos', file);
+        }
+
+        console.log('Enviando solicitação fetch para upload de fotos');
+
+        const response = await fetch(`http://localhost:3000/fotos/upload/${veiculoId}`, {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Fotos adicionadas com sucesso:', data);
+
+        await associationFotosToVeiculo(veiculoId, data);
+
+    } catch (error) {
+        console.log('Erro ao adicionar fotos:', error.message);
+    }
+}
+
+//Função para associar fotos ao veículo na base de dados
+async function associationFotosToVeiculo(veiculoId, fotoData) {
+    try {
+        //Cria um array de objetos com VeiculoId e NomeArquivo
+        const fotosParaAssociar = fotoData.map(foto => ({
+            VeiculoId: veiculoId,
+            NomeArquivo: foto.filename,
+        }));
+
+        console.log('Fotos para associar:', fotosParaAssociar);
+
+        // Log para verificar se há algum erro durante a operação de bulkCreate
+        const result = await Foto.bulkCreate(fotosParaAssociar);
+        console.log('Resultado do bulkCreate:', result);
+
+        console.log('Fotos associadas ao veículo na base de dados.');
+    } catch (error) {
+        console.log('Erro ao associar fotos aso veículo:', error.message);
+    }
+}
+
+// Função para obter dados do formulário
+function obterDadosDoFormulario() {
     // Obter os valores dos campos do formulário
     const id = document.getElementById('Id').value;
     const grupo = document.getElementById('Grupo').value;
@@ -43,8 +169,8 @@ function adicionarVeiculo() {
         return;
     }
 
-    // Construir objeto com os dados do veículo
-    const novoVeiculo = {
+    return {
+        // ... Seus dados do veículo ...
         Id: id,
         Grupo: grupo,
         Unidade: unidade,
@@ -78,96 +204,26 @@ function adicionarVeiculo() {
 
         Fotos: foto,
     };
-
-    // Log para verificar o objeto novoVeiculo antes de enviar
-    console.log('Objeto novoVeiculo:', novoVeiculo);
-
-    // Enviar dados para o servidor usando o método fetch
-    fetch('http://localhost:3000/veiculos', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(novoVeiculo),
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        // Lógica para lidar com a resposta do servidor (pode ser atualizar a página, redirecionar, etc.)
-        console.log('Veículo adicionado com sucesso:', data);
-
-        // Adicionar a lógica para o upload de fotos
-        uploadsFotos(data.Id, foto);
-
-        // // Redirecionar para a página de detalhes após a conclusão bem-sucedida
-        // window.location.href = `/pages/veiculos/DetalharVeiculos.html?id=${data.Id}`;
-    })
-    .catch(error => {
-        // Lógica para lidar com erros na requisição
-        console.error('Erro ao adicionar veículo:', error.message);
-        res.status(500).json({ error: 'Erro interno do servidor' });
-    });
-
-    const errorMessage = document.getElementById('error-message');
-    errorMessage.textContent = '';
-    errorMessage.style.display = 'none';
 }
 
-
-async function uploadsFotos(veiculoId, fotos) {
-    const formData = new FormData();
-
+// Função para enviar dados do veículo para o servidor
+async function enviarDadosParaServidor(novoVeiculo) {
     try {
-        for (let index = 0; index < fotos.length; index++) {
-            const file = fotos[index];
-            console.log('Adicionando foto ao FormData:', file.name);
-            formData.append('fotos', file);
-        }
+        console.log('Enviando dados para o servidor:', novoVeiculo);
 
-        console.log('Enviando solicitação fetch para upload de fotos');
-
-        const response = await fetch(`http://localhost:3000/fotos/upload/${veiculoId}`, {
+        const response = await fetch('http://localhost:3000/veiculos', {
             method: 'POST',
-            body: formData,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(novoVeiculo),
         });
 
         console.log('Resposta do servidor:', response);
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log('Fotos adicionadas com sucesso:', data);
-
-        await associationFotosToVeiculo(veiculoId, data);
-
+        return response;
     } catch (error) {
-        console.log('Erro ao adicionar fotos:', error.message);
-    }
-}
-
-//Função para associar fotos ao veículo na base de dados
-async function associationFotosToVeiculo(veiculoId, fotoData) {
-    try {
-        //Cria um array de objetos com VeiculoId e NomeArquivo
-        const fotosParaAssociar = fotoData.map(foto => ({
-            VeiculoId: veiculoId,
-            NomeArquivo: foto.filename,
-        }));
-
-        console.log('Fotos para associar:', fotosParaAssociar);
-
-        // Log para verificar se há algum erro durante a operação de bulkCreate
-        const result = await Fotos.bulkCreate(fotosParaAssociar);
-        console.log('Resultado do bulkCreate:', result);
-
-        console.log('Fotos associadas ao veículo na base de dados.');
-    } catch (error) {
-        console.log('Erro ao associar fotos aso veículo:', error.message);
+        console.error('Erro ao enviar dados para o servidor:', error.message);
+        throw error;
     }
 }

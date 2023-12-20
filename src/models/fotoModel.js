@@ -31,17 +31,4 @@ Foto.associate = (models) => {
   Foto.belongsTo(models.Veiculo, { foreignKey: 'VeiculoId' });
 };
 
-const obterFotosPorVeiculoId = async (veiculoId) => {
-  try {
-    const fotos = await Foto.findAll({
-      where: { VeiculoId: veiculoId },
-      attributes: ['Id', 'NomeArquivo'],
-    });
-    return fotos;
-  } catch (error) {
-    console.error('Erro ao obter fotos por VeiculoId:', error);
-    throw error;
-  }
-};
-
-module.exports = { obterFotosPorVeiculoId, Foto };
+module.exports = Foto;
