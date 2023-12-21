@@ -46,4 +46,17 @@ const obterFotosPorVeiculoId = async (veiculoId) => {
   }
 };
 
-module.exports = { uploadFoto, obterFotosPorVeiculoId };
+// Método para remover uma foto do banco de dados
+const removerFoto = async (veiculoId, nomeArquivo) => {
+  try {
+    await Foto.destroy({
+      where: { VeiculoId: veiculoId, NomeArquivo: nomeArquivo },
+    });
+    console.log('Foto removida com sucesso.');
+  } catch (error) {
+    console.error('Erro ao remover foto:', error);
+    throw error;
+  }
+};
+
+module.exports = { uploadFoto, obterFotosPorVeiculoId, removerFoto };

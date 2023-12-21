@@ -26,7 +26,7 @@
                 <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav ml-auto" id="navbarNav">
                         <li class="nav-item">
-                            <a class="nav-link" href="/">Veículos</a>
+                            <a class="nav-link" href="/pages/veiculos/ListarVeiculos.html">Veículos</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="caminho/para/cliente/Index">Clientes</a>
@@ -41,7 +41,7 @@
     </header>
 
     <!-- Conteúdo da página -->
-    <main role="main" class="pb-3">
+
         <div class="container mt-4">
             <h2>Adicionar Novo Veículo</h2>
             <br>
@@ -301,18 +301,17 @@
 
                 <br>
 
-                <div id="mensagemSucesso" class="alert alert-success" role="alert" style="display: none;">
-                    Dados salvos com sucesso!
-                </div>
+                <button type="submit" id="btnSalvar" class="btn btn-primary">Salvar</button>
 
                 <br>
 
-                <button id="btnSalvar" class="btn btn-primary">Salvar</button>
-                <!-- Adicione este elemento no final do seu formulário -->
-
+                <div id="mensagemSucesso" class="alert alert-success" role="alert" style="display: none;">
+                    Dados salvos com sucesso!
+                </div>
+                
+                <br>
             </form>
         </div>
-    </main>
 
     <footer class="border-top footer mt-5 text-dark">
         <div class="container">
@@ -326,5 +325,13 @@
     <script src="/js/veiculo/adicionarVeiculo.js"></script>
     <script src="/js/previewImages.js"></script>
 </body>
+
+<!-- Adicione este elemento ao final do body para o pop-in -->
+<div id="messageModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="fecharMensagemModal()">&times;</span>
+      <p id="mensagemModalTexto"></p>
+    </div>
+</div>
 
 </html>

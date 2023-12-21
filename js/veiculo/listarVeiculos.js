@@ -58,7 +58,7 @@ function renderVeiculoCard(veiculo) {
                     </p>
                     <div class="btn-group" role="group">
                         <a href="#" class="btn btn-primary detalhes-btn" data-veiculo-id="${veiculo.Id}">Detalhes</a>
-                        <a href="/veiculo/editar/${veiculo.id}" class="btn btn-info">Editar</a>
+                        <a href="#" class="btn btn-info editar-btn" data-veiculo-id="${veiculo.Id}">Editar</a>
                         <a href="/veiculo/excluir/${veiculo.id}" class="btn btn-danger">Excluir</a>
                     </div>
                 </div>
@@ -101,6 +101,23 @@ async function loadVeiculos() {
                 // Carregar as fotos e, em seguida, redirecionar para a página de detalhes
                 await loadFotosVeiculo(veiculo);
                 window.location.href = `/pages/veiculos/DetalharVeiculos.html?id=${veiculoId}`;
+            });
+
+            $('.editar-btn').click(async function (event) {
+                event.preventDefault();
+                const veiculoId = $(this).data('veiculo-id');
+                console.log('ID do veículo:', veiculoId);
+
+                // Obter as fotos do veículo
+                const fotos = await $.get(`http://localhost:3000/fotos/${veiculoId}`);
+
+                // Adicionar as fotos ao objeto do veículo
+                const veiculo = veiculos.find(v => v.Id === veiculoId);
+                veiculo.Fotos = fotos;
+
+                // Carregar as fotos e, em seguida, redirecionar para a página de detalhes
+                await loadFotosVeiculo(veiculo);
+                window.location.href = `/pages/veiculos/EditarVeiculos.html?id=${veiculoId}`;
             });
         } else {
             console.error('A resposta do servidor não é um array:', veiculos);

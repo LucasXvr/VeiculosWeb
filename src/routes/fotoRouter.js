@@ -3,6 +3,7 @@ const router = express.Router();
 const fotoController = require('../controllers/fotoController');
 const multer = require('multer');
 const path = require('path');
+const Foto = require('../models/fotoModel');
 
 //Configuração do Multer para salvar os arquivos na pasta 'uploads'
 const storage = multer.diskStorage({
@@ -34,6 +35,25 @@ router.get('/:veiculoId', async (req, res) => {
     res.json(fotos);
   } catch (error) {
     console.error('Erro ao obter fotos por veículo:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
+// Rota para excluir uma foto de um veículo específico
+router.delete('/:veiculoId/:nomeArquivo', async (req, res) => {
+  try {
+    const veiculoId = req.params.veiculoId;
+    const nomeArquivo = req.params.nomeArquivo;
+
+    // Remover a foto do banco de dados
+    await Foto.destroy({
+      where: { VeiculoId: veiculoId, NomeArquivo: nomeArquivo }
+    });
+
+    // Responder com sucesso
+    res.status(204).send();
+  } catch (error) {
+    console.error('Erro ao excluir a foto:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });
   }
 });

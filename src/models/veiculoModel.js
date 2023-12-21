@@ -191,7 +191,7 @@ const obterVeiculoPorId = async (veiculoId) => {
 const atualizarVeiculo = async (veiculoId, novosDados) => {
   try {
     const veiculoAtualizado = await Veiculo.update(novosDados, {
-      where: { id: veiculoId },
+      where: { Id: veiculoId },
       returning: true,
       plain: true,
     });

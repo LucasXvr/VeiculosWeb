@@ -27,8 +27,8 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log('Resposta do servidor:', response);
 
             if (response.ok) {
-                // const data = await response.json();
-                // await uploadsFotos(data.Id, novoVeiculo.Fotos);
+                const data = await response.json();
+                await uploadsFotos(data.Id, novoVeiculo.Fotos);
 
                 // Limpar os campos do formulário
                 limparFormulario();
@@ -204,26 +204,4 @@ function obterDadosDoFormulario() {
 
         Fotos: foto,
     };
-}
-
-// Função para enviar dados do veículo para o servidor
-async function enviarDadosParaServidor(novoVeiculo) {
-    try {
-        console.log('Enviando dados para o servidor:', novoVeiculo);
-
-        const response = await fetch('http://localhost:3000/veiculos', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(novoVeiculo),
-        });
-
-        console.log('Resposta do servidor:', response);
-
-        return response;
-    } catch (error) {
-        console.error('Erro ao enviar dados para o servidor:', error.message);
-        throw error;
-    }
 }

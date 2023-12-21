@@ -31,14 +31,12 @@ function previewImages() {
 }
 
 function previewNewImages() {
-    console.log('Chamou previewNewImages'); // Adicione esta linha
-    var previewContainer = document.getElementById('preview-container');
+    console.log('Chamou previewNewImages');
+    var previewContainer = document.getElementById('image-preview');
     var filesInput = document.getElementById('novasFotos');
     var files = filesInput.files;
 
     console.log('Número de novas imagens:', files.length);
-
-    previewContainer.innerHTML = '';
 
     for (var i = 0; i < files.length; i++) {
         console.log('Iterando sobre a imagem', i + 1);
@@ -46,7 +44,6 @@ function previewNewImages() {
         var reader = new FileReader();
 
         reader.onload = function (e) {
-            
             var imgContainer = document.createElement('div');
             imgContainer.className = 'image-container';
 
@@ -66,6 +63,18 @@ function previewNewImages() {
         reader.readAsDataURL(file);
     }
 }
+
+// Certifique-se de chamar a função apenas uma vez após a seleção de imagens
+document.addEventListener('DOMContentLoaded', function () {
+    const novasFotosInput = document.getElementById('novasFotos');
+    if (novasFotosInput) {
+        novasFotosInput.addEventListener('change', function () {
+            previewNewImages();
+        });
+    }
+});
+
+
     
 
 function removeImage(nomeArquivo) {
