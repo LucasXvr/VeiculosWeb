@@ -3,6 +3,7 @@ const cors = require('cors');
 const sequelize = require('./config/database');
 const veiculosRoutes = require('./routes/veiculosRoutes');
 const fotoRouter = require('./routes/fotoRouter');
+const clienteRouter = require('./routes/clienteRouter');
 const path = require('path');
 
 const app = express();
@@ -13,6 +14,7 @@ app.use(cors());
 
 app.use('/veiculos', veiculosRoutes);
 app.use('/fotos', fotoRouter);
+app.use('/clientes', clienteRouter);
 
 (async () => {
   try {

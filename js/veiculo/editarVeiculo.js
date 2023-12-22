@@ -1,32 +1,28 @@
 document.addEventListener('DOMContentLoaded', async function () {
-    const veiculoId = obterIdDoVeiculoDaURL();
-
-    if (!veiculoId) {
-        console.error('ID do veículo não encontrado na URL.');
-        // Adicione aqui o comportamento desejado para quando o ID não está presente
-        return;
-    }
-
     try {
-        const veiculo = await obterVeiculoPorId(veiculoId);
-        const fotos = await obterFotosDoVeiculo(veiculoId);
+        const veiculoId = obterIdDoVeiculoDaURL();
+
+        if (!veiculoId) {
+            console.error('ID do veículo não encontrado na URL.');
+            return;
+        }
+
+        const [veiculo, fotos] = await Promise.all([
+            obterVeiculoPorId(veiculoId),
+            obterFotosDoVeiculo(veiculoId),
+        ]);
 
         preencherCamposDoFormulario(veiculo, fotos);
 
-        // Adicione um ouvinte de evento ao botão de "Salvar" ou "Atualizar"
         const salvarBtn = document.getElementById('salvarBtn');
         salvarBtn.addEventListener('click', async () => {
-            // Obtenha os dados atualizados do formulário
-            const dadosAtualizados = obterDadosDoFormulario();
-
-            // Envie uma solicitação PUT para atualizar o veículo
+            const dadosAtualizados = await obterDadosDoFormulario();
             await atualizarVeiculo(veiculoId, dadosAtualizados);
         });
     } catch (error) {
-        console.error('Erro ao obter veículo:', error);
+        console.error('Erro ao inicializar:', error);
     }
 });
-
 
 function obterIdDoVeiculoDaURL() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -140,21 +136,22 @@ async function obterDadosDoFormulario() {
         // Converta novasFotos em um array, se necessário
         const novasFotosArray = Array.from(dadosFormulario.novasFotos);
 
-        // Verifique se há um ID válido do veículo antes de chamar a função de associação
-        if (dadosFormulario.Id) {
+        // Verifique se há novas fotos antes de chamar a função de associação
+        if (novasFotosArray.length > 0 && dadosFormulario.Id) {
             // Associar as novas fotos ao veículo no servidor
             await associationFotosToVeiculo(dadosFormulario.Id, novasFotosArray);
 
             // Remover a propriedade 'novasFotos' dos dados do formulário, pois já foram processadas
             delete dadosFormulario.novasFotos;
         } else {
-            console.error('ID do veículo não encontrado. As fotos não serão associadas.');
+            console.log('Nenhuma nova foto para associar.');
         }
     } catch (error) {
         console.error('Erro ao associar fotos ao veículo:', error);
         // Adicione aqui o comportamento desejado em caso de erro
     }
-
+    
+    console.log('Dados do formulário:', dadosFormulario);
     return dadosFormulario;
 }
 
@@ -217,6 +214,8 @@ async function removerImagem(veiculoId, nomeArquivo) {
 // Função para atualizar o veículo
 async function atualizarVeiculo(veiculoId, dadosAtualizados) {
     try {
+        console.log('Dados atualizados antes da stringify:', dadosAtualizados);
+
         const response = await fetch(`http://localhost:3000/veiculos/${veiculoId}`, {
             method: 'PUT',
             headers: {
@@ -225,23 +224,23 @@ async function atualizarVeiculo(veiculoId, dadosAtualizados) {
             body: JSON.stringify(dadosAtualizados),
         });
 
+        // Verificar se a resposta não está vazia
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        console.log('Veículo atualizado com sucesso.');
-        // Adicione aqui o comportamento desejado após a atualização bem-sucedida
+        // Aguardar a resposta ser processada antes de prosseguir
+        const responseData = await response.json();
 
-        // Adicione a mensagem de sucesso na interface do usuário
-        exibirMensagemDeSucesso('Veículo atualizado com sucesso!');
+        console.log('Veículo atualizado com sucesso:', responseData);
+        // Adicione aqui o comportamento desejado após a atualização bem-sucedida
     } catch (error) {
         console.error('Erro ao atualizar veículo:', error);
-        // Adicione a mensagem de erro na interface do usuário
-        exibirMensagemDeErro('Erro ao atualizar veículo. Por favor, tente novamente.');
-
         // Adicione aqui o comportamento desejado em caso de erro
     }
 }
+
+
 
 // Função para exibir mensagem de sucesso na interface do usuário
 function exibirMensagemDeSucesso(mensagem) {
@@ -269,7 +268,7 @@ async function associationFotosToVeiculo(veiculoId, fotoData) {
             console.log('Fotos para associar:', fotosParaAssociar);
 
             // Envie a lista de fotos para o servidor usando a sua rota de upload existente
-            await enviarFotosParaServidor(veiculoId, fotosParaAssociar);
+            await enviarFotosParaServidor(veiculoId, fotoData);
 
             console.log('Fotos associadas ao veículo na base de dados.');
         } else {
@@ -283,12 +282,11 @@ async function associationFotosToVeiculo(veiculoId, fotoData) {
 // Enviar a lista de fotos para o servidor
 async function enviarFotosParaServidor(veiculoId, fotos) {
     try {
-        // Adapte a URL da sua rota de upload de fotos
         const uploadUrl = `http://localhost:3000/fotos/upload/${veiculoId}`;
-
         const formData = new FormData();
+
         fotos.forEach(foto => {
-            formData.append('fotos', new File([foto], foto.NomeArquivo)); // Cria um novo objeto File para cada foto
+            formData.append('fotos', foto); // Use 'fotos' como o nome do campo esperado no servidor
         });
 
         console.log('Enviando solicitação fetch para upload de fotos');
@@ -311,3 +309,4 @@ async function enviarFotosParaServidor(veiculoId, fotos) {
         console.error('Erro ao enviar fotos para o servidor:', error);
     }
 }
+

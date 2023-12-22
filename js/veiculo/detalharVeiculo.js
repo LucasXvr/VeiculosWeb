@@ -106,3 +106,33 @@ function exibirInformacoesVeiculo(veiculo) {
 function voltarParaLista() {
     window.location.href = 'ListarVeiculos.html';
 }
+
+function editarVeiculo() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const veiculoId = urlParams.get('id');
+
+    // Verificar se o veiculoId é null ou undefined
+    if (!veiculoId) {
+        console.error('ID do veículo não encontrado na URL.');
+        // Adicione aqui o comportamento desejado para quando o ID não está presente
+        return;
+    }
+
+    // Redirecionar para a página de edição com o veiculoId
+    window.location.href = `/pages/veiculos/EditarVeiculos.html?id=${veiculoId}`;
+}
+
+function confirmarExclusao() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const veiculoId = urlParams.get('id');
+
+    // Verificar se o veiculoId é null ou undefined
+    if (!veiculoId) {
+        console.error('ID do veículo não encontrado na URL.');
+        // Adicione aqui o comportamento desejado para quando o ID não está presente
+        return;
+    }
+
+    // Redirecionar para a página de edição com o veiculoId
+    window.location.href = `/pages/veiculos/ExcluirVeiculos.html?id=${veiculoId}`;
+}

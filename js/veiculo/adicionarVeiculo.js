@@ -33,34 +33,29 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Limpar os campos do formulário
                 limparFormulario();
 
-                // Exibir mensagem de sucesso
-                exibirMensagem('success', 'Veículo adicionado com sucesso!');
+                exibirMensagemDeSucesso('Veículo adicionado com sucesso!');
             } else {
                 throw new Error('Erro ao adicionar veículo. Tente novamente.');
             }
         } catch (error) {
             console.error('Erro ao adicionar veículo:', error.message);
-            exibirMensagem('danger', 'Erro interno do servidor. Tente novamente mais tarde.');
+            exibirMensagemDeErro('Erro ao adicionar veículo. Por favor, tente novamente.');
         }
     });
 });
 
-// Função para exibir mensagens na interface do usuário
-function exibirMensagem(tipo, mensagem) {
-    const mensagemElemento = document.getElementById('mensagemSucesso'); // Alteração aqui
-
-    if (mensagemElemento) {
-        mensagemElemento.textContent = mensagem;
-        mensagemElemento.className = `alert alert-${tipo}`;
-        mensagemElemento.style.display = 'block';
-
-        setTimeout(() => {
-            mensagemElemento.style.display = 'none';
-        }, 5000);
-    } else {
-        console.error('Elemento da mensagem não encontrado.');
-    }
+// Função para exibir mensagem de sucesso na interface do usuário
+function exibirMensagemDeSucesso(mensagem) {
+    // Adapte este código conforme necessário para exibir a mensagem na interface do usuário
+    alert(mensagem);
 }
+
+// Função para exibir mensagem de erro na interface do usuário
+function exibirMensagemDeErro(mensagem) {
+    // Adapte este código conforme necessário para exibir a mensagem na interface do usuário
+    alert(mensagem);
+}
+
 
 // Implementação básica da função para limpar o formulário
 function limparFormulario() {

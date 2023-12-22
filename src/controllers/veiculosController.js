@@ -68,6 +68,12 @@ async function atualizarVeiculo(req, res) {
 async function excluirVeiculo(req, res) {
   const veiculoId = req.params.id;
   try {
+    // Excluir fotos associadas ao veículo
+    await Foto.destroy({
+      where: { VeiculoId: veiculoId }
+    });
+
+    // Excluir o veículo
     const veiculoExcluido = await veiculoModels.excluirVeiculo(veiculoId);
     if (!veiculoExcluido) {
       return res.status(404).json({ mensagem: 'Veículo não encontrado' });
@@ -78,6 +84,7 @@ async function excluirVeiculo(req, res) {
     res.status(500).send('Erro interno do servidor');
   }
 }
+
 
 module.exports = {
   listarVeiculos,
