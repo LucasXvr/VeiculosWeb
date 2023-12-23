@@ -89,7 +89,7 @@ async function excluirFotoDoVeiculo(veiculoId, nomeArquivo) {
         // Chamar rota de exclusão de foto do veículo
         console.log(`Excluindo foto ${nomeArquivo} do veículo ${veiculoId}`);
         await $.ajax({
-            url: `http://localhost:3000/veiculos/${veiculoId}/${nomeArquivo}`,
+            url: `http://localhost:3000/fotos/${veiculoId}/${nomeArquivo}`,
             type: 'DELETE',
             success: function () {
                 console.log(`Foto ${nomeArquivo} do veículo ${veiculoId} excluída com sucesso`);
