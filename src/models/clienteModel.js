@@ -100,8 +100,47 @@ const obterTodosClientes = async () => {
     }
   };
 
+  const obterClientePorId = async (clienteId) => {
+    try {
+      console.log('Buscando veículo por ID:', clienteId);
+      const cliente = await Cliente.findByPk(clienteId);
+      console.log('Veículo encontrado:', cliente);
+      return cliente;
+    } catch (error) {
+      console.error('Erro ao obter veículo por ID:', error);
+      throw error;
+    }
+  };
+
+  const atualizarCliente = async (clienteId, novosDados) => {
+    try {
+      const clienteAtualizado = await Cliente.update(novosDados, {
+        where: { Id: clienteId },
+        returning: true,
+        plain: true,
+      });
+      return clienteAtualizado[1];
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const excluirCliente = async (clienteId) => {
+    try {
+      const clienteExcluido = await Cliente.destroy({
+        where: { id: clienteId },
+      });
+      return clienteExcluido;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   module.exports = {
     obterTodosClientes,
     criarCliente,
+    obterClientePorId,
+    atualizarCliente,
+    excluirCliente,
     Cliente,
   };

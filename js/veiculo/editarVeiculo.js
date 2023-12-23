@@ -233,14 +233,14 @@ async function atualizarVeiculo(veiculoId, dadosAtualizados) {
         const responseData = await response.json();
 
         console.log('Veículo atualizado com sucesso:', responseData);
+        exibirMensagemDeSucesso('Veiculo atualizado com sucesso');
         // Adicione aqui o comportamento desejado após a atualização bem-sucedida
     } catch (error) {
         console.error('Erro ao atualizar veículo:', error);
         // Adicione aqui o comportamento desejado em caso de erro
+        exibirMensagemDeErro('Erro ao atualizar veiculo');
     }
 }
-
-
 
 // Função para exibir mensagem de sucesso na interface do usuário
 function exibirMensagemDeSucesso(mensagem) {

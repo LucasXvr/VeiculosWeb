@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Adicionar Cliente - E2Motors</title>
+    <title>Editar Cliente - E2Motors</title>
     <!-- Adicione os links para os arquivos CSS necessários -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/css/style.css" />
@@ -16,8 +16,7 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark custom-navbar box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" href="/index.html">
-                    <img src="/images/E2MotorsLogo.png" alt="Logo E2 Motors"
-                        style="max-width: 100px; max-height: 100px;">
+                    <img src="/images/E2MotorsLogo.png" alt="Logo E2 Motors" style="max-width: 100px; max-height: 100px;">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,12 +40,12 @@
     </header>
 
     <!-- Conteúdo da página -->
-
+    <main role="main" class="pb-3">
         <div class="container mt-4">
-            <h2>Adicionar Novo Cliente</h2>
+            <h2>Editar Cliente</h2>
             <br>
-            <form id="formAdicionarVeiculo">
-            <!-- Seção: Informações Pessoais -->
+            <form id="formEditarVeiculo">
+                <!-- Seção: Informações Pessoais -->
                 <div>
                     <h3>Informações Pessoais</h3>
 
@@ -173,7 +172,6 @@
                 </div>
 
                 <br>
-                Seção: Classificação
                 <div>
                     <h3>Classificação</h3>
                 
@@ -214,14 +212,17 @@
                     </div>
                 </div>
                 <br>
-                <!-- Botão de Submit -->
-                <button type="submit" id="btnSalvar" class="btn btn-primary">Salvar</button>
+                    <!-- Botão de Submit -->
+                    <!-- Alteração do ID do botão para "salvarBtn" -->
+                    <button type="button" id="salvarBtn" class="btn btn-primary">Salvar</button>
 
-                
                 <br>                    
                 <br>
             </form>
         </div>
+
+        </div>
+    </main>
 
     <footer class="border-top footer mt-5 text-dark">
         <div class="container">
@@ -230,9 +231,10 @@
     </footer>
 
     <!-- Adicione os scripts JavaScript necessários -->
-    <script src="https://code.jquery.com/jquery-3.6.4.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/js/cliente/adicionarCliente.js"></script>
+    <script src="/js/cliente/editarCliente.js"></script>
+
 </body>
 
 </html>

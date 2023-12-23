@@ -29,11 +29,32 @@ document.addEventListener('DOMContentLoaded', function () {
             // Atualizar a página com as informações do veículo
             exibirInformacoesVeiculo(veiculo);
 
+            // Formatar e exibir a data de cadastro
+            const dtCadastroFormatada = formatarData(veiculo.DtCadastro);
+            document.getElementById('dtcadastro').innerText = dtCadastroFormatada;
+
+            // Formatar e exibir a data de emissão do documento do veículo
+            const emissaoDocumentoFormatada = formatarData(veiculo.EmissaoDocumentoVeiculo);
+            document.getElementById('emissaodocumentoveiculo').innerText = emissaoDocumentoFormatada;
+
+
             // Carregar e exibir fotos do veículo
             await loadFotosVeiculo(veiculo.Id);
         })
         .catch(error => console.error('Erro ao obter veículo:', error));
 });
+
+function formatarData(dataString) {
+    const data = new Date(dataString);
+    
+    // Obter componentes da data
+    const dia = String(data.getDate()).padStart(2, '0');
+    const mes = String(data.getMonth() + 1).padStart(2, '0'); // Mês é base 0, então adicionamos 1
+    const ano = data.getFullYear();
+
+    // Formatar a data como "dd/mm/yyyy"
+    return `${dia}/${mes}/${ano}`;
+}
 
 // Função para carregar e exibir as fotos do veículo
 async function loadFotosVeiculo(veiculoId) {

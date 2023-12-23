@@ -1,33 +1,40 @@
 // Função para renderizar o HTML do carrossel de fotos
+let carouselCounter = 0;
+
 function renderCarousel(veiculo) {
     console.log('Veiculo:', veiculo);
+
     if (veiculo.Fotos && veiculo.Fotos.length > 0) {
+        const carouselId = `carousel-${veiculo.id}-${carouselCounter++}`;
+
+        const carouselItems = veiculo.Fotos.map((foto, index) => `
+            <div class="carousel-item ${index === 0 ? 'active' : ''}">
+                <img src="/images/uploads/${foto.NomeArquivo}" alt="Foto" class="d-block w-100 img-fluid">
+            </div>
+        `).join('');
+
+        const carouselControls = veiculo.Fotos.length > 1 ? `
+            <a class="carousel-control-prev" href="#${carouselId}" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </a>
+            <a class="carousel-control-next" href="#${carouselId}" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </a>
+        ` : '';
+
+        const carouselIndicators = veiculo.Fotos.map((_, index) => `
+            <li data-target="#${carouselId}" data-slide-to="${index}" class="${index === 0 ? 'active' : ''}"></li>
+        `).join('');
+
         return `
             <div class="row memory">
-                <div id="carousel-${veiculo.id}" class="carousel slide" data-ride="carousel">
+                <div id="${carouselId}" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
-                        ${veiculo.Fotos.map((foto, index) => `
-                            <div class="carousel-item ${index === 0 ? 'active' : ''}">
-                                <img src="/images/uploads/${foto.NomeArquivo}" alt="Foto"
-                                    class="d-block w-100 img-fluid">
-                            </div>
-                        `).join('')}
+                        ${carouselItems}
                     </div>
-                    ${veiculo.Fotos.length > 1 ? `
-                        <a class="carousel-control-prev" href="#carousel-${veiculo.id}" role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only"></span>
-                        </a>
-                        <a class="carousel-control-next" href="#carousel-${veiculo.id}" role="button" data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only"></span>
-                        </a>
-                    ` : ''}\
+                    ${carouselControls}
                     <ol class="carousel-indicators">
-                        ${veiculo.Fotos.map((foto, index) => `
-                            <li data-target="#carousel-${veiculo.id}" data-slide-to="${index}" class="${index === 0 ? 'active' : ''}">
-                            </li>
-                        `).join('')}
+                        ${carouselIndicators}
                     </ol>
                 </div>
             </div>
@@ -35,8 +42,7 @@ function renderCarousel(veiculo) {
     } else {
         return `
             <div id="image-preview" class="mt-3 text-center">
-                <img src="/images/sem-foto.png" alt="Foto" class="img-fluid mx-auto"
-                    style="max-height: auto; max-width: auto;">
+                <img src="/images/sem-foto.png" alt="Foto" class="img-fluid mx-auto" style="max-height: auto; max-width: auto;">
             </div>
         `;
     }
@@ -70,6 +76,9 @@ function renderVeiculoCard(veiculo) {
 // Função para carregar veículos e renderizar os cards
 async function loadVeiculos() {
     try {
+        // Obtenha os parâmetros de busca da URL
+        const urlParams = new URLSearchParams(window.location.search);
+        // Faça a requisição para obter veículos
         const veiculos = await $.get('http://localhost:3000/veiculos');
 
         $('#veiculosList').empty();
@@ -147,6 +156,18 @@ async function loadVeiculos() {
 // Executar a função ao carregar a página
 $(document).ready(function () {
     loadVeiculos();
+
+    // Adicione o evento de envio para o formulário de busca
+    $('#formBuscaVeiculos').submit(function (event) {
+        event.preventDefault();
+        
+        // Obtenha os valores dos campos do formulário e codifique-os
+        const searchString = encodeURIComponent($('#formBuscaVeiculos input[name="searchString"]').val());
+        const searchField = encodeURIComponent($('#formBuscaVeiculos input[name="searchField"]').val());
+
+        // Redirecione para a página de veículos com os parâmetros de busca
+        window.location.href = `/pages/veiculos/ListarVeiculos.html?searchString=${searchString}&searchField=${searchField}`;
+    });
 
      // Obter o ID da URL
      const urlParams = new URLSearchParams(window.location.search);
