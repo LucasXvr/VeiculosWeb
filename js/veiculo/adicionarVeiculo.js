@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         try {
-            console.log('Enviando dados para o servidor:', novoVeiculo);
+            // console.log('Enviando dados para o servidor:', novoVeiculo);
 
             const response = await fetch('http://localhost:3000/veiculos', {
                 method: 'POST',
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 body: JSON.stringify(novoVeiculo),
             });
 
-            console.log('Resposta do servidor:', response);
+            // console.log('Resposta do servidor:', response);
 
             if (response.ok) {
                 const data = await response.json();
@@ -56,6 +56,29 @@ function exibirMensagemDeErro(mensagem) {
     alert(mensagem);
 }
 
+// Função para exibir mensagens na interface do usuário
+function exibirMensagem(tipo, texto) {
+    // Remova a mensagem existente se houver
+    const mensagemExistente = document.getElementById('mensagem');
+    if (mensagemExistente) {
+        mensagemExistente.remove();
+    }
+
+    // Crie um elemento de mensagem
+    const mensagemElemento = document.createElement('div');
+    mensagemElemento.id = 'mensagem';
+    mensagemElemento.className = `alert alert-${tipo}`;
+    mensagemElemento.textContent = texto;
+
+    // Insira a mensagem acima do formulário
+    const formulario = document.getElementById('formAdicionarVeiculo'); // Substitua 'seu-formulario-id' pelo ID real do seu formulário
+    formulario.parentNode.insertBefore(mensagemElemento, formulario);
+
+    // Limpe a mensagem após alguns segundos (opcional)
+    setTimeout(() => {
+        mensagemElemento.remove();
+    }, 5000); // Remova a mensagem após 5 segundos (ajuste conforme necessário)
+}
 
 // Implementação básica da função para limpar o formulário
 function limparFormulario() {
@@ -72,11 +95,11 @@ async function uploadsFotos(veiculoId, fotos) {
     try {
         for (let index = 0; index < fotos.length; index++) {
             const file = fotos[index];
-            console.log('Adicionando foto ao FormData:', file.name);
+            // console.log('Adicionando foto ao FormData:', file.name);
             formData.append('fotos', file);
         }
 
-        console.log('Enviando solicitação fetch para upload de fotos');
+        // console.log('Enviando solicitação fetch para upload de fotos');
 
         const response = await fetch(`http://localhost:3000/fotos/upload/${veiculoId}`, {
             method: 'POST',
@@ -110,7 +133,7 @@ async function associationFotosToVeiculo(veiculoId, fotoData) {
 
         // Log para verificar se há algum erro durante a operação de bulkCreate
         const result = await Foto.bulkCreate(fotosParaAssociar);
-        console.log('Resultado do bulkCreate:', result);
+        // console.log('Resultado do bulkCreate:', result);
 
         console.log('Fotos associadas ao veículo na base de dados.');
     } catch (error) {

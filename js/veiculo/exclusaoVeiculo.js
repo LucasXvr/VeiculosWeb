@@ -70,7 +70,7 @@ async function excluirVeiculo(veiculoId) {
             url: `http://localhost:3000/veiculos/${veiculoId}`,
             type: 'DELETE',
             success: function () {
-                console.log('Veículo excluído com sucesso');
+                // console.log('Veículo excluído com sucesso');
                 // Redirecionar para a lista de veículos após a exclusão bem-sucedida
                 window.location.href = "/pages/veiculos/ListarVeiculos.html";
             },
@@ -87,7 +87,7 @@ async function excluirVeiculo(veiculoId) {
 async function excluirFotoDoVeiculo(veiculoId, nomeArquivo) {
     try {
         // Chamar rota de exclusão de foto do veículo
-        console.log(`Excluindo foto ${nomeArquivo} do veículo ${veiculoId}`);
+        // console.log(`Excluindo foto ${nomeArquivo} do veículo ${veiculoId}`);
         await $.ajax({
             url: `http://localhost:3000/fotos/${veiculoId}/${nomeArquivo}`,
             type: 'DELETE',

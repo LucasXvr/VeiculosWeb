@@ -2,7 +2,7 @@
 let carouselCounter = 0;
 
 function renderCarousel(veiculo) {
-    console.log('Veiculo:', veiculo);
+    // console.log('Veiculo:', veiculo);
 
     if (veiculo.Fotos && veiculo.Fotos.length > 0) {
         const carouselId = `carousel-${veiculo.id}-${carouselCounter++}`;
@@ -85,7 +85,7 @@ async function loadVeiculos() {
 
         $('#veiculosList').empty();
 
-        if (Array.isArray(veiculos)) {
+        if (Array.isArray(veiculos) && veiculos.length > 0) {
             const filteredVeiculos = searchString
                 ? veiculos.filter(veiculo => veiculo.MarcaModeloVeiculo.toLowerCase().includes(searchString.toLowerCase()))
                 : veiculos;
@@ -104,7 +104,7 @@ async function loadVeiculos() {
             $('.detalhes-btn').click(async function (event) {
                 event.preventDefault();
                 const veiculoId = $(this).data('veiculo-id');
-                console.log('ID do veículo:', veiculoId);
+                // console.log('ID do veículo:', veiculoId);
 
                 // Obter as fotos do veículo
                 const fotos = await $.get(`http://localhost:3000/fotos/${veiculoId}`);
@@ -121,7 +121,7 @@ async function loadVeiculos() {
             $('.editar-btn').click(async function (event) {
                 event.preventDefault();
                 const veiculoId = $(this).data('veiculo-id');
-                console.log('ID do veículo:', veiculoId);
+                // console.log('ID do veículo:', veiculoId);
 
                 // Obter as fotos do veículo
                 const fotos = await $.get(`http://localhost:3000/fotos/${veiculoId}`);
@@ -138,7 +138,7 @@ async function loadVeiculos() {
             $('.excluir-btn').click(async function (event) {
                 event.preventDefault();
                 const veiculoId = $(this).data('veiculo-id');
-                console.log('ID do veículo:', veiculoId);
+                // console.log('ID do veículo:', veiculoId);
 
                 // Obter as fotos do veículo
                 const fotos = await $.get(`http://localhost:3000/fotos/${veiculoId}`);
@@ -152,7 +152,44 @@ async function loadVeiculos() {
                 window.location.href = `/pages/veiculos/ExcluirVeiculos.html?id=${veiculoId}`;
             });
         } else {
-            console.error('A resposta do servidor não é um array:', veiculos);
+            // Caso a lista de veículos esteja vazia, adicione o HTML padrão
+            $('#veiculosList').html(`
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div id="image-preview" class="mt-3 text-center">
+                                <img src="/images/sem-foto.png" alt="Foto" class="img-fluid mx-auto"
+                                    style="max-height: auto; max-width: auto;">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Nenhum veículo adicionado ainda. </h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div id="image-preview" class="mt-3 text-center">
+                                <img src="/images/sem-foto.png" alt="Foto" class="img-fluid mx-auto"
+                                    style="max-height: auto; max-width: auto;">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Nenhum veículo adicionado ainda. </h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div id="image-preview" class="mt-3 text-center">
+                                <img src="/images/sem-foto.png" alt="Foto" class="img-fluid mx-auto"
+                                    style="max-height: auto; max-width: auto;">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Nenhum veículo adicionado ainda. </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
         }
     } catch (error) {
         console.error('Erro ao obter veículos:', error);
@@ -182,13 +219,13 @@ $(document).ready(function () {
      // Se o veiculoId não estiver presente, não fazer a requisição
     if (veiculoId) {
         // Log para verificar se o ID está sendo obtido corretamente
-        console.log('Identificando o Id que está chegando:', veiculoId);
+        // console.log('Identificando o Id que está chegando:', veiculoId);
 
         // Fazer uma requisição para obter o veículo pelo ID
         $.get(`http://localhost:3000/veiculos/${veiculoId}`)
             .done(function (veiculo) {
                 // Log para verificar se o veículo foi obtido corretamente
-                console.log('Veículo obtido:', veiculo);
+                // console.log('Veículo obtido:', veiculo);
             })
             .fail(function (error) {
                 console.error('Erro ao obter veículo:', error);

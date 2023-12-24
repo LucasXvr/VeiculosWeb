@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     // Obter o ID do cliente da URL
-    console.log('Detalhar cliente - Início da função');
+    // console.log('Detalhar cliente - Início da função');
     const urlParams = new URLSearchParams(window.location.search);
-    console.log('Conteúdo de urlParams:', urlParams);  // Adiciona este log
+    // console.log('Conteúdo de urlParams:', urlParams);  // Adiciona este log
     const clienteId = urlParams.get('id');
-    console.log('Identificando o Id que está chegando:', clienteId);
-    console.log('URL da página:', window.location.href);
+    // console.log('Identificando o Id que está chegando:', clienteId);
+    // console.log('URL da página:', window.location.href);
 
     // Verificar se o veiculoId é null ou undefined
     if (!clienteId) {

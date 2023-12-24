@@ -49,6 +49,30 @@ function exibirMensagemDeErro(mensagem) {
     alert(mensagem);
 }
 
+// Função para exibir mensagens na interface do usuário
+function exibirMensagem(tipo, texto) {
+    // Remova a mensagem existente se houver
+    const mensagemExistente = document.getElementById('mensagem');
+    if (mensagemExistente) {
+        mensagemExistente.remove();
+    }
+
+    // Crie um elemento de mensagem
+    const mensagemElemento = document.createElement('div');
+    mensagemElemento.id = 'mensagem';
+    mensagemElemento.className = `alert alert-${tipo}`;
+    mensagemElemento.textContent = texto;
+
+    // Insira a mensagem acima do formulário
+    const formulario = document.getElementById('formAdicionarCliente'); // Substitua 'seu-formulario-id' pelo ID real do seu formulário
+    formulario.parentNode.insertBefore(mensagemElemento, formulario);
+
+    // Limpe a mensagem após alguns segundos (opcional)
+    setTimeout(() => {
+        mensagemElemento.remove();
+    }, 5000); // Remova a mensagem após 5 segundos (ajuste conforme necessário)
+}
+
 // Implementação básica da função para limpar o formulário
 function limparFormulario() {
     const elementosFormulario = document.querySelectorAll('form input, form select, form textarea');

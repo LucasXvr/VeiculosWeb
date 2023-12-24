@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', async function () {
+    let classificacaoSelecionada; // Adicione esta linha
+    
     try {
         const clienteId = obterIdDoClienteDaURL();
 
@@ -37,7 +39,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 function obterIdDoClienteDaURL() {
     const urlParams = new URLSearchParams(window.location.search);
     const clienteId = urlParams.get('id'); // Use 'Id' (maiúsculo) para corresponder à sua URL
-    console.log('ID do cliente na URL:', clienteId);
+    // console.log('ID do cliente na URL:', clienteId);
     return clienteId;
 }
 
@@ -112,7 +114,7 @@ async function obterDadosDoFormulario() {
     
     };
     
-    console.log('Dados do formulário:', dadosFormulario);
+    // console.log('Dados do formulário:', dadosFormulario);
     return dadosFormulario;
 }
 
@@ -120,7 +122,7 @@ async function obterDadosDoFormulario() {
 // Função para atualizar o veículo
 async function atualizarCliente(clienteId, dadosAtualizados) {
     try {
-        console.log('Dados atualizados antes da stringify:', dadosAtualizados);
+        // console.log('Dados atualizados antes da stringify:', dadosAtualizados);
 
         const response = await fetch(`http://localhost:3000/clientes/${clienteId}`, {
             method: 'PUT',

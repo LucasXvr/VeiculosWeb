@@ -151,7 +151,7 @@ async function obterDadosDoFormulario() {
         // Adicione aqui o comportamento desejado em caso de erro
     }
     
-    console.log('Dados do formulário:', dadosFormulario);
+    // console.log('Dados do formulário:', dadosFormulario);
     return dadosFormulario;
 }
 
@@ -161,7 +161,7 @@ function exibirImagensDoVeiculo(fotos, veiculoId) {
 
     if (fotos && fotos.length > 0) {
         fotosContainer.empty();
-        console.log('veiculoId:', veiculoId);
+        // console.log('veiculoId:', veiculoId);
         fotos.forEach(foto => {
             const imgUrl = `/images/uploads/${foto.NomeArquivo}`;
             const fotoElement = $('<div class="col-md-4 mb-4">').html(`
@@ -201,7 +201,7 @@ async function removerImagem(veiculoId, nomeArquivo) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        console.log('Imagem removida com sucesso.');
+        // console.log('Imagem removida com sucesso.');
 
         // Remover a imagem da interface
         $(`[value="${nomeArquivo}"]`).parent().remove();
@@ -214,7 +214,7 @@ async function removerImagem(veiculoId, nomeArquivo) {
 // Função para atualizar o veículo
 async function atualizarVeiculo(veiculoId, dadosAtualizados) {
     try {
-        console.log('Dados atualizados antes da stringify:', dadosAtualizados);
+        // console.log('Dados atualizados antes da stringify:', dadosAtualizados);
 
         const response = await fetch(`http://localhost:3000/veiculos/${veiculoId}`, {
             method: 'PUT',
@@ -289,7 +289,7 @@ async function enviarFotosParaServidor(veiculoId, fotos) {
             formData.append('fotos', foto); // Use 'fotos' como o nome do campo esperado no servidor
         });
 
-        console.log('Enviando solicitação fetch para upload de fotos');
+        // console.log('Enviando solicitação fetch para upload de fotos');
 
         const response = await fetch(uploadUrl, {
             method: 'POST',

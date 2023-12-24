@@ -32,7 +32,7 @@ async function loadClientes() {
         
         $('#clientesList').empty();
 
-        if (Array.isArray(clientes)) {
+        if (Array.isArray(clientes) && clientes.length > 0) {
             const filteredClientes = searchString
                 ? clientes.filter(cliente => cliente.Nome.toLowerCase().includes(searchString.toLowerCase()))
                 : clientes;
@@ -45,7 +45,7 @@ async function loadClientes() {
             $('.detalhes-btn').click(async function (event) {
                 event.preventDefault();
                 const clienteId = $(this).data('cliente-id');
-                console.log('ID do cliente:', clienteId);
+                // console.log('ID do cliente:', clienteId);
 
                 window.location.href = `/pages/clientes/DetalharClientes.html?id=${clienteId}`;
             });
@@ -53,7 +53,7 @@ async function loadClientes() {
             $('.editar-btn').click(async function (event) {
                 event.preventDefault();
                 const clienteId = $(this).data('cliente-id');
-                console.log('ID do cliente:', clienteId);
+                // console.log('ID do cliente:', clienteId);
 
                 window.location.href = `/pages/clientes/EditarClientes.html?id=${clienteId}`;
             });
@@ -61,13 +61,52 @@ async function loadClientes() {
             $('.excluir-btn').click(async function (event) {
                 event.preventDefault();
                 const clienteId = $(this).data('cliente-id');
-                console.log('ID do cliente:', clienteId);
+                // console.log('ID do cliente:', clienteId);
 
                 window.location.href = `/pages/clientes/ExcluirClientes.html?id=${clienteId}`;
             });
             // Restante do código (event listeners) permanece o mesmo.
         } else {
-            console.error('A resposta do servidor não é um array:', clientes);
+            // Caso a lista de veículos esteja vazia, adicione o HTML padrão
+            $('#clientesList').html(`
+                    <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div id="image-preview" class="mt-3 text-center">
+                                <img src="/images/sem-foto.png" alt="Foto" class="img-fluid mx-auto"
+                                    style="max-height: auto; max-width: auto;">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Nenhum Cliente adicionado ainda. </h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div id="image-preview" class="mt-3 text-center">
+                                <img src="/images/sem-foto.png" alt="Foto" class="img-fluid mx-auto"
+                                    style="max-height: auto; max-width: auto;">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Nenhum Cliente adicionado ainda. </h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div id="image-preview" class="mt-3 text-center">
+                                <img src="/images/sem-foto.png" alt="Foto" class="img-fluid mx-auto"
+                                    style="max-height: auto; max-width: auto;">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Nenhum Cliente adicionado ainda. </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
         }
     } catch (error) {
         console.error('Erro ao obter clientes:', error);
@@ -96,13 +135,13 @@ $(document).ready(function () {
     // Se o clienteId estiver presente, fazer a requisição para obter o cliente pelo ID
     if (clienteId) {
         // Log para verificar se o ID está sendo obtido corretamente
-        console.log('Identificando o Id que está chegando:', clienteId);
+        // console.log('Identificando o Id que está chegando:', clienteId);
 
         // Fazer uma requisição para obter o cliente pelo ID
         $.get(`http://localhost:3000/clientes/${clienteId}`)
             .done(function (cliente) {
                 // Log para verificar se o cliente foi obtido corretamente
-                console.log('Cliente obtido:', cliente);
+                // console.log('Cliente obtido:', cliente);
 
                 // Restante do código para manipular o cliente (se necessário)
             })
