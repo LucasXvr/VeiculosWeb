@@ -151,10 +151,10 @@ async function loadVeiculos() {
                 await loadFotosVeiculo(veiculo);
                 window.location.href = `/pages/veiculos/ExcluirVeiculos.html?id=${veiculoId}`;
             });
+
         } else {
             // Caso a lista de veículos esteja vazia, adicione o HTML padrão
             $('#veiculosList').html(`
-                <div class="row">
                     <div class="col-md-4 mb-4">
                         <div class="card">
                             <div id="image-preview" class="mt-3 text-center">
@@ -188,7 +188,6 @@ async function loadVeiculos() {
                             </div>
                         </div>
                     </div>
-                </div>
             `);
         }
     } catch (error) {

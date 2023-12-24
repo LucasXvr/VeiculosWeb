@@ -69,43 +69,30 @@ async function loadClientes() {
         } else {
             // Caso a lista de veículos esteja vazia, adicione o HTML padrão
             $('#clientesList').html(`
-                    <div class="row">
-                    <div class="col-md-4 mb-4">
-                        <div class="card">
-                            <div id="image-preview" class="mt-3 text-center">
-                                <img src="/images/sem-foto.png" alt="Foto" class="img-fluid mx-auto"
-                                    style="max-height: auto; max-width: auto;">
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">Nenhum Cliente adicionado ainda. </h5>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 mb-4">
-                        <div class="card">
-                            <div id="image-preview" class="mt-3 text-center">
-                                <img src="/images/sem-foto.png" alt="Foto" class="img-fluid mx-auto"
-                                    style="max-height: auto; max-width: auto;">
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">Nenhum Cliente adicionado ainda. </h5>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 mb-4">
-                        <div class="card">
-                            <div id="image-preview" class="mt-3 text-center">
-                                <img src="/images/sem-foto.png" alt="Foto" class="img-fluid mx-auto"
-                                    style="max-height: auto; max-width: auto;">
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">Nenhum Cliente adicionado ainda. </h5>
-                            </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Nenhum Cliente adicionado ainda. </h5>
                         </div>
                     </div>
                 </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Nenhum Cliente adicionado ainda. </h5>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Nenhum Cliente adicionado ainda. </h5>
+                        </div>
+                    </div>
+                </div>
+            
             `);
         }
     } catch (error) {
