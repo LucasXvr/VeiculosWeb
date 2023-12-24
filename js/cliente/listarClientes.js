@@ -25,13 +25,19 @@ function renderClienteCard(cliente) {
 // Função para carregar clientes e renderizar os cards
 async function loadClientes() {
     try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const searchString = urlParams.get('searchString');
         const url = `http://localhost:3000/clientes`;
         const clientes = await $.get(url);
         
         $('#clientesList').empty();
 
         if (Array.isArray(clientes)) {
-            for (const cliente of clientes) {
+            const filteredClientes = searchString
+                ? clientes.filter(cliente => cliente.Nome.toLowerCase().includes(searchString.toLowerCase()))
+                : clientes;
+
+            for (const cliente of filteredClientes) {
                 // Renderizar o card do cliente
                 $('#clientesList').append(renderClienteCard(cliente));
             }
@@ -70,6 +76,19 @@ async function loadClientes() {
 
 // Executar a função ao carregar a página
 $(document).ready(function () {
+
+    // Adicione o evento de envio para o formulário de busca
+    $('#formBuscaClientes').submit(function (event) {
+        event.preventDefault();
+        
+        // Obtenha os valores dos campos do formulário e codifique-os
+        const searchString = encodeURIComponent($('#formBuscaClientes input[name="searchString"]').val());
+        const searchField = encodeURIComponent($('#formBuscaClientes input[name="searchField"]').val());
+
+        // Redirecione para a página de veículos com os parâmetros de busca
+        window.location.href = `/pages/clientes/ListarClientes.html?searchString=${searchString}&searchField=${searchField}`;
+    });
+
     // Obter o ID da URL
     const urlParams = new URLSearchParams(window.location.search);
     const clienteId = urlParams.get('id');

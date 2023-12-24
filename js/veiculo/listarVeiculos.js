@@ -78,13 +78,19 @@ async function loadVeiculos() {
     try {
         // Obtenha os parâmetros de busca da URL
         const urlParams = new URLSearchParams(window.location.search);
+        const searchString = urlParams.get('searchString');
+        
         // Faça a requisição para obter veículos
         const veiculos = await $.get('http://localhost:3000/veiculos');
 
         $('#veiculosList').empty();
 
         if (Array.isArray(veiculos)) {
-            for (const veiculo of veiculos) {
+            const filteredVeiculos = searchString
+                ? veiculos.filter(veiculo => veiculo.MarcaModeloVeiculo.toLowerCase().includes(searchString.toLowerCase()))
+                : veiculos;
+
+            for (const veiculo of filteredVeiculos) {
                 // Obter as fotos do veículo
                 const fotos = await $.get(`http://localhost:3000/fotos/${veiculo.Id}`);
 
