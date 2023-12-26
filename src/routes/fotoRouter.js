@@ -5,15 +5,27 @@ const multer = require('multer');
 const path = require('path');
 const Foto = require('../models/fotoModel');
 
-//Configuração do Multer para salvar os arquivos na pasta 'uploads'
+// Função para verificar se o aplicativo está sendo executado localmente
+const isLocalhost = () => {
+  return (
+    process.env.NODE_ENV !== 'production' ||
+    process.env.HOSTNAME === 'localhost' ||
+    process.env.IP === '127.0.0.1'
+  );
+};
+
+// Configuração do Multer para salvar os arquivos em locais diferentes com base na condição
 const storage = multer.diskStorage({
-    destination: function (req, file, cb){
-      cb(null, 'C:/Desenvolvimento/VeiculosApp/images/uploads/');
-    },
-    filename: function (req, file, cb) {
-      cb(null, file.originalname);
-    },
-  });
+  destination: function (req, file, cb) {
+    const uploadPath = isLocalhost()
+      ? 'C:/Desenvolvimento/VeiculosApp/images/uploads/'
+      : '/home/adilson/public_html/images/uploads/';
+    cb(null, uploadPath);
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
 
 const upload = multer({storage: storage});
 
